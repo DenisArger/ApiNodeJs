@@ -1,5 +1,7 @@
 {
   "name": "apinodejs",
+  "description": "REST API for storing and retrieving JSON payloads with Supabase backend",
+  "license": "MIT",
   "dependencies": {
     "@supabase/supabase-js": "^2.20.0",
     "cors": "^2.8.5",
