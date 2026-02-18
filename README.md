@@ -1,5 +1,8 @@
 ﻿# ApiNodeJs
 
+[![CI](https://github.com/DenisArger/ApiNodeJs/actions/workflows/ci.yml/badge.svg)](https://github.com/DenisArger/ApiNodeJs/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+
 ## Описание
 ApiNodeJs — небольшой HTTP?сервис на Express для сохранения и получения JSON?документов в Supabase. Сервис принимает произвольный JSON, сохраняет его в таблицу `jsons_tb`, генерирует короткий идентификатор длиной 6 символов и позволяет получать сохранённый JSON по этому идентификатору. Одновременно раздаётся статический контент из папки `assets` и HTML?страница `index.html` по корневому маршруту.
 
