@@ -1,73 +1,103 @@
-﻿# ApiNodeJs
+# ApiNodeJs
 
-[![CI](https://github.com/DenisArger/ApiNodeJs/actions/workflows/ci.yml/badge.svg)](https://github.com/DenisArger/ApiNodeJs/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
+## English
 
-## Описание
-ApiNodeJs — небольшой HTTP?сервис на Express для сохранения и получения JSON?документов в Supabase. Сервис принимает произвольный JSON, сохраняет его в таблицу `jsons_tb`, генерирует короткий идентификатор длиной 6 символов и позволяет получать сохранённый JSON по этому идентификатору. Одновременно раздаётся статический контент из папки `assets` и HTML?страница `index.html` по корневому маршруту.
+## Problem
+Small teams often need a lightweight endpoint to store arbitrary JSON and retrieve it by a short link-like identifier.
 
-## Возможности
-- Генерация короткого id (6 символов, `nanoid`).
-- Сохранение JSON в Supabase.
-- Получение JSON по id.
-- CORS включён по умолчанию.
+## Solution
+`ApiNodeJs` is an Express service that saves JSON payloads to Supabase and returns a 6-character ID for later retrieval.
 
-## API
-### `GET /`
-Возвращает `index.html`.
+## Tech Stack
+- Node.js
+- Express
+- Supabase (`@supabase/supabase-js`)
+- NanoID
+- CORS
+- Netlify config present (`netlify.toml`)
 
-### `GET /get`
-Возвращает ошибку `400` с сообщением `empty id`.
-
-### `GET /get/:id`
-Возвращает сохранённый JSON по id. Если длина id не 6 символов — `400` (`incorrect id`). Если объект не найден — `404` (`not object`).
-
-### `POST /generate`
-Сохраняет JSON в Supabase и возвращает `status` и сгенерированный `id`. Если тело отсутствует — `400` (`no body`). Если тело не JSON или пустой объект — `400`.
-
-Пример:
-```bash
-curl -X POST http://localhost:3000/generate \
-  -H "Content-Type: application/json" \
-  -d '{"hello":"world"}'
+## Architecture
+Top-level structure:
+```text
+assets/
+functions/
+public/
+express.js
+supabase.js
+generatorId.js
 ```
 
-Ответ:
-```json
-{ "status": 201, "id": "a1B2c3" }
+```mermaid
+flowchart TD
+  A[Client] --> B[Express API]
+  B --> C[POST /generate]
+  B --> D[GET /get/:id]
+  C --> E[Supabase jsons_tb]
+  D --> E
 ```
 
-Получение:
-```bash
-curl http://localhost:3000/get/a1B2c3
-```
+## Features
+- Save arbitrary JSON via `POST /generate`
+- Retrieve JSON via `GET /get/:id`
+- ID validation (exactly 6 chars)
+- Static asset serving from `assets/`
 
-## Требования
-Node.js 16+.
-Проект Supabase с таблицей `jsons_tb`.
-Колонка `id` (text/varchar, уникальное значение).
-Колонка `data` (json/jsonb).
-
-## Настройка
-1. Установите зависимости.
+## How to Run
 ```bash
 npm install
-```
-2. Скопируйте файл `.env.example` в `.env` и укажите ключи.
-```env
-SUPABASE_URL="..."
-SUPABASE_KEY="..."
-```
-
-## Запуск
-```bash
+cp .env.example .env
 node express.js
 ```
-Сервер стартует на `http://localhost:3000`.
 
-## Структура проекта
-`express.js` — HTTP?сервер и маршруты API.
-`supabase.js` — интеграция с Supabase.
-`generatorId.js` — генерация коротких id.
-`assets/` — статика.
-`index.html` — главная страница.
+Server starts on `http://localhost:3000`.
+
+## Русский
+
+## Проблема
+Небольшим командам часто нужен простой endpoint, где можно сохранить произвольный JSON и получить его по короткому идентификатору.
+
+## Решение
+`ApiNodeJs` — это сервис на Express, который сохраняет JSON в Supabase и возвращает 6-символьный ID для последующего получения.
+
+## Стек
+- Node.js
+- Express
+- Supabase (`@supabase/supabase-js`)
+- NanoID
+- CORS
+- Есть конфиг Netlify (`netlify.toml`)
+
+## Архитектура
+Верхнеуровневая структура:
+```text
+assets/
+functions/
+public/
+express.js
+supabase.js
+generatorId.js
+```
+
+```mermaid
+flowchart TD
+  A[Клиент] --> B[Express API]
+  B --> C[POST /generate]
+  B --> D[GET /get/:id]
+  C --> E[Supabase jsons_tb]
+  D --> E
+```
+
+## Возможности
+- Сохранение произвольного JSON через `POST /generate`
+- Получение JSON через `GET /get/:id`
+- Валидация ID (ровно 6 символов)
+- Раздача статики из `assets/`
+
+## Как запустить
+```bash
+npm install
+cp .env.example .env
+node express.js
+```
+
+Сервис поднимается на `http://localhost:3000`.
