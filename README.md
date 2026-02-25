@@ -1,4 +1,5 @@
 # ApiNodeJs
+[![CI](https://github.com/DenisArger/ApiNodeJs/actions/workflows/ci.yml/badge.svg)](https://github.com/DenisArger/ApiNodeJs/actions/workflows/ci.yml)
 
 ## English
 
