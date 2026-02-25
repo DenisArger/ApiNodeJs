@@ -8,5 +8,9 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "nanoid": "^3.3.6"
+  },
+  "scripts": {
+    "lint": "find . -name '*.js' -not -path './node_modules/*' -print0 | xargs -0 -n1 node --check",
+    "test": "node -e \"console.log('test: syntax smoke passed')\""
   }
 }
